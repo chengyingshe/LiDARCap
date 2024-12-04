@@ -112,8 +112,8 @@ class TemporalDataset(Dataset):
             with h5py.File(os.path.join(self.dataset_path, f'{id}.hdf5'), 'r') as f:
                 # assert f['pose'][0].shape == (
                 # 72,), f"Dataset：{os.path.join(self.dataset_path, f'{id}.hdf5')}, the pose shape:{f['pose'][0].shape} is wrong！"
-                # self.length += (len(
-                #     f['pose']) - self.cfg.drop_first_n) // self.cfg.seqlen
+                self.length += (len(
+                    f['pose']) - self.cfg.drop_first_n) // self.cfg.seqlen
                 if 'lidar_to_mocap_RT' not in f:
                     self.lidar_to_mocap_RT_flag = False
 

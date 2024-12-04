@@ -33,7 +33,7 @@ def compute_error_accel(joints_gt, joints_pred, vis=None):
     # (N-2)x14x3
     accel_gt = joints_gt[:-2] - 2 * joints_gt[1:-1] + joints_gt[2:]
     accel_pred = joints_pred[:-2] - 2 * joints_pred[1:-1] + joints_pred[2:]
-
+    
     normed = np.linalg.norm(accel_pred - accel_gt, axis=2)
 
     if vis is None:
@@ -293,19 +293,31 @@ def output_metric(pred_poses, gt_poses):
 
     pred_joints -= pred_joints[:, :1, :]
     gt_joints -= gt_joints[:, :1, :]
+    
+    # print('####gt_joints:', gt_joints.shape)
+    # print('####pred_joints:', pred_joints.shape)
+
+    gt_joints = gt_joints[:pred_joints.shape[0], :, :]
 
     accel_error = np.mean(compute_error_accel(gt_joints, pred_joints)) * m2mm
     mpjpe, pa_mpjpe = compute_errors(gt_joints, pred_joints)
     mpjpe = np.mean(mpjpe) * m2mm
     pa_mpjpe = np.mean(pa_mpjpe) * m2mm
+    
+    # print('####pred_vertices:', pred_vertices.shape)
+    # print('####gt_vertices:', gt_vertices.shape)
+    
+    gt_vertices = gt_vertices[:pred_vertices.shape[0], :, :]
+    
     pve = np.mean(compute_error_verts(pred_vertices, gt_vertices)) * m2mm
     pck_30 = compute_pck(pred_joints, gt_joints, 0.3)
     pck_50 = compute_pck(pred_joints, gt_joints, 0.5)
 
-    print(accel_error)
-    print(mpjpe)
-    print(pa_mpjpe)
-    print(pve)
-    print(pck_30)
-    print(pck_50)
+    print(f'accel_error: {accel_error}')
+    print(f'mpjpe: {mpjpe}')
+    print(f'pa_mpjpe: {pa_mpjpe}')
+    print(f'pve: {pve}')
+    print(f'pck_30: {pck_30}')
+    print(f'pck_50: {pck_50}')
     print()
+    

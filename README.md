@@ -7,26 +7,29 @@ and put it in data directory.
 
 If you want to deal with your own dataset, refer to `datasets/preprocess/lidarcap.py` to process your data into a format can be handled by LiDARCap.
 
+- You could enter the directory `datasets/preprocess`, and then run the commands below:
+  
+  ```shell
+  python lidarcap.py dump --seqlen 1 --name lidarcap_test --ids 7,24,29,41 # generate lidarcap_test.hdf5
+  python lidarcap.py dump --seqlen 1 --name lidarcap_train --ids 5,6,8,25,26,27,28,30,31,32,33,34,35,36,37,38,39,40,42 # generate lidarcap_train.hdf5
+  ```
+
+- You could also download the processed `hdf5` files from [Baidu Drive](https://pan.baidu.com/s/1r85f-tiPJf48Ut_jrLPXNw?pwd=1234)
+
 # TRAIN or EVAL
 ### 1. Modify the info
+
 - Modify `base.yaml`to set `DATASET_DIR` to the path where your dataset is located.
+
 - Update the relevant information for `wandb` in `tools/common.py`.
+
 ### 2. Build Environment
+
 ```
 conda create -n lidar_human python=3.7
 pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
 pip install "git+git://github.com/erikwijmans/Pointnet2_PyTorch.git#egg=pointnet2_ops&subdirectory=pointnet2_ops_lib"（或者下载github然后pip install pointnet2_ops_lib/.）
-pip install wandb
-pip install h5py
-pip install tqdm
-pip install scipy
-pip install opencv-python
-pip install pyransac3d
-pip install yacs
-pip install plyfile
-pip install scikit-image
-pip install joblib
-pip install chumpy
+pip install -r requirements.txt
 ```
 
 ### 3. Train 

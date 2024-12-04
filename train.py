@@ -103,10 +103,10 @@ if __name__ == '__main__':
         loader = {'Test': test_loader}
 
     else:
-        train_dataset = TemporalDataset(dataset=dataset_name, train=True)
+        train_dataset = TemporalDataset(cfg.TrainDataset, dataset=dataset_name, train=True)
         train_loader = torch.utils.data.DataLoader(
             train_dataset, batch_size=config.bs, shuffle=True, num_workers=config.threads, pin_memory=True, collate_fn=collate)
-        valid_dataset = TemporalDataset(dataset=dataset_name, train=False)
+        valid_dataset = TemporalDataset(cfg.TrainDataset, dataset=dataset_name, train=False)
         valid_loader = torch.utils.data.DataLoader(
             valid_dataset, batch_size=config.bs, shuffle=False, num_workers=config.threads, pin_memory=True, collate_fn=collate)
         loader = {'Train': train_loader, 'Valid': valid_loader}

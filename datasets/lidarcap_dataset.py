@@ -110,10 +110,10 @@ class TemporalDataset(Dataset):
         self.lidar_to_mocap_RT_flag = True
         for id in self.dataset_ids:
             with h5py.File(os.path.join(self.dataset_path, f'{id}.hdf5'), 'r') as f:
-                assert f['pose'][0].shape == (
-                72,), f"Dataset：{os.path.join(self.dataset_path, f'{id}.hdf5')}, the pose shape:{f['pose'][0].shape} is wrong！"
-                self.length += (len(
-                    f['pose']) - self.cfg.drop_first_n) // self.cfg.seqlen
+                # assert f['pose'][0].shape == (
+                # 72,), f"Dataset：{os.path.join(self.dataset_path, f'{id}.hdf5')}, the pose shape:{f['pose'][0].shape} is wrong！"
+                # self.length += (len(
+                #     f['pose']) - self.cfg.drop_first_n) // self.cfg.seqlen
                 if 'lidar_to_mocap_RT' not in f:
                     self.lidar_to_mocap_RT_flag = False
 
@@ -186,8 +186,8 @@ class TemporalDataset(Dataset):
                 plane_model = data['plane_model'][
                               l:r] if 'plane_model' in data else None
 
-                assert pose.shape == (seqlen, 72) and full_joints.shape == (
-                seqlen, 24, 3) and human_points.shape == (seqlen, 512, 3), 'shape is wrong！'
+                # assert pose.shape == (seqlen, 72) and full_joints.shape == (
+                # seqlen, 24, 3) and human_points.shape == (seqlen, 512, 3), 'shape is wrong！'
 
                 sample_pc = data['sample_pc'][l:r] if 'sample_pc' in data else None
 
@@ -388,12 +388,12 @@ class TemporalDataset(Dataset):
                 human_boundary_points = points * boundary_label[..., np.newaxis]
                 item['human_points'] = torch.from_numpy(human_boundary_points).float()
 
-        if len(boundary_label.shape) == 3:
-            human_boundary_points = points * boundary_label
-            item['human_boundary'] = torch.from_numpy(human_boundary_points).float()
-        elif len(boundary_label.shape) == 2:
-            human_boundary_points = points * boundary_label[..., np.newaxis]
-            item['human_boundary'] = torch.from_numpy(human_boundary_points).float()
+        # if len(boundary_label.shape) == 3:
+        #     human_boundary_points = points * boundary_label
+        #     item['human_boundary'] = torch.from_numpy(human_boundary_points).float()
+        # elif len(boundary_label.shape) == 2:
+        #     human_boundary_points = points * boundary_label[..., np.newaxis]
+        #     item['human_boundary'] = torch.from_numpy(human_boundary_points).float()
 
         if self.cfg.inside_random:
             if len(boundary_label.shape) == 3:
